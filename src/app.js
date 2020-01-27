@@ -7,6 +7,8 @@ import 'express-async-errors';
 import routes from './routes';
 import sentryConfig from './config/sentry';
 
+import './database';
+
 class App {
   constructor() {
     this.server = express();
