@@ -51,6 +51,41 @@ class DeliveryController {
 
     return res.json(deliveries);
   }
+
+  async update(req, res) {
+    const schema = Yup.object().shape({
+      recipient_id: Yup.number(),
+      deliveryman_id: Yup.number(),
+      product: Yup.string(),
+    });
+
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ error: 'Validation fails' });
+    }
+
+    const delivery = await Delivery.findByPk(req.params.id);
+
+    const { recipient_id, product } = req.body;
+
+    if (
+      recipient_id !== delivery.recipient_id &&
+      product !== delivery.product
+    ) {
+      const deliveryExists = await Delivery.findOne({
+        where: { product, recipient_id, canceled_at: null },
+      });
+
+      if (deliveryExists) {
+        return res
+          .status(400)
+          .json({ error: 'A delivery was already created for this package' });
+      }
+    }
+
+    const { deliveryman_id } = await delivery.update(req.body);
+
+    return res.json({ recipient_id, product, deliveryman_id });
+  }
 }
 
 export default new DeliveryController();
