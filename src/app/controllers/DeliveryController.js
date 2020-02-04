@@ -33,6 +33,24 @@ class DeliveryController {
 
     return res.json(delivery);
   }
+
+  async index(req, res) {
+    const deliveries = await Delivery.findAll({
+      where: { canceled_at: null },
+      order: ['created_at'],
+      attributes: [
+        'id',
+        'recipient_id',
+        'deliveryman_id',
+        'signature_id',
+        'product',
+        'start_date',
+        'end_date',
+      ],
+    });
+
+    return res.json(deliveries);
+  }
 }
 
 export default new DeliveryController();
