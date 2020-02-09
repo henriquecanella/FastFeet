@@ -16,6 +16,7 @@ const routes = new Router();
 const upload = multer(multerConfig);
 
 routes.get('/deliveryman/:id/deliveries', DeliverylistController.index);
+routes.put('/deliveryman/deliveries/:id', DeliverylistController.update);
 
 routes.post('/sessions', SessionController.store);
 
