@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 
 import { signInRequest } from '~/store/modules/auth/actions';
 
-import logo from '~/assets/fastfeet-logo.png';
+import logo from '~/assets/fastfeet-header.svg';
 
 const schema = Yup.object().shape({
   email: Yup.string()

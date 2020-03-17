@@ -19,6 +19,11 @@ export const Content = styled.div`
   border-radius: 4px;
   padding: 65px 30px;
 
+  img {
+    width: 259px;
+    height: 44px;
+  }
+
   form {
     display: flex;
     flex-direction: column;
