@@ -2,10 +2,9 @@ import * as Yup from 'yup';
 import Delivery from '../models/Delivery';
 import Deliveryman from '../models/Deliveryman';
 import Recipient from '../models/Recipient';
-import DeliveryProblem from '../models/DeliveryProblem';
+import File from '../models/File';
 
 import DeliveryMail from '../jobs/DeliveryMail';
-import CancellationMail from '../jobs/CancellationMail';
 import Queue from '../../lib/Queue';
 
 class DeliveryController {
@@ -62,16 +61,31 @@ class DeliveryController {
 
   async index(req, res) {
     const deliveries = await Delivery.findAll({
-      where: { canceled_at: null },
       order: ['created_at'],
-      attributes: [
-        'id',
-        'recipient_id',
-        'deliveryman_id',
-        'signature_id',
-        'product',
-        'start_date',
-        'end_date',
+      attributes: ['id', 'signature_id', 'product', 'start_date', 'end_date'],
+      include: [
+        {
+          model: Recipient,
+          as: 'recipient',
+          attributes: ['id', 'name', 'city', 'state'],
+        },
+        {
+          model: Deliveryman,
+          as: 'deliveryman',
+          attributes: ['id', 'name'],
+          include: [
+            {
+              model: File,
+              as: 'avatar',
+              attributes: ['id', 'name', 'path', 'url'],
+            },
+          ],
+        },
+        {
+          model: File,
+          as: 'signature',
+          attributes: ['id', 'name', 'path', 'url'],
+        },
       ],
     });
 
@@ -114,7 +128,7 @@ class DeliveryController {
   }
 
   async delete(req, res) {
-    const delivery = await Delivery.findByPk(req.params.id, {
+    /* const delivery = await Delivery.findByPk(req.params.id, {
       include: [
         {
           model: Deliveryman,
@@ -138,7 +152,12 @@ class DeliveryController {
       delivery,
     });
 
-    return res.json(delivery);
+    return res.json(delivery); */
+    const delivery = await Delivery.findByPk(req.params.id);
+
+    await delivery.destroy();
+
+    return res.json({ name: `Delivery ${delivery.id} deleted` });
   }
 }
 

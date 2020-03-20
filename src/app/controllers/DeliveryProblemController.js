@@ -1,5 +1,10 @@
 import * as Yup from 'yup';
 import DeliveryProblem from '../models/DeliveryProblem';
+import Delivery from '../models/Delivery';
+import Deliveryman from '../models/Deliveryman';
+
+import CancellationMail from '../jobs/CancellationMail';
+import Queue from '../../lib/Queue';
 
 class DeliveryProblemController {
   async store(req, res) {
@@ -26,6 +31,34 @@ class DeliveryProblemController {
     });
 
     return res.json(deliveryproblem);
+  }
+
+  async delete(req, res) {
+    const delivery = await Delivery.findByPk(req.params.id, {
+      include: [
+        {
+          model: Deliveryman,
+          as: 'deliveryman',
+          attributes: ['name', 'email'],
+        },
+      ],
+    });
+
+    delivery.canceled_at = new Date();
+
+    await delivery.save();
+
+    const cancellation = await DeliveryProblem.findOne({
+      where: { delivery_id: delivery.id },
+      attributes: ['description'],
+    });
+
+    await Queue.add(CancellationMail.key, {
+      cancellation,
+      delivery,
+    });
+
+    return res.json(delivery);
   }
 }
 

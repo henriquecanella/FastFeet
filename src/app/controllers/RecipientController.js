@@ -45,6 +45,24 @@ class RecipientController {
     return res.json({ id, name, street, number, complement, state, city, CEP });
   }
 
+  async index(req, res) {
+    const recipients = await Recipient.findAll({
+      order: ['created_at'],
+      attributes: [
+        'id',
+        'name',
+        'street',
+        'number',
+        'complement',
+        'city',
+        'state',
+        'cep',
+      ],
+    });
+
+    return res.json(recipients);
+  }
+
   async update(req, res) {
     const schema = Yup.object().shape({
       name: Yup.string(),
@@ -90,6 +108,14 @@ class RecipientController {
 
     const { id, complement, state, cep } = await recipient.update(req.body);
     return res.json({ id, name, street, number, complement, state, city, cep });
+  }
+
+  async delete(req, res) {
+    const recipient = await Recipient.findByPk(req.params.id);
+
+    await recipient.destroy();
+
+    return res.json({ name: `Recipient: ${recipient.name} deleted` });
   }
 }
 
