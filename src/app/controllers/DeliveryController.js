@@ -1,4 +1,5 @@
 import * as Yup from 'yup';
+import { Op } from 'sequelize';
 import Delivery from '../models/Delivery';
 import Deliveryman from '../models/Deliveryman';
 import Recipient from '../models/Recipient';
@@ -60,7 +61,14 @@ class DeliveryController {
   }
 
   async index(req, res) {
+    const { q } = req.query;
+
     const deliveries = await Delivery.findAll({
+      where: {
+        product: {
+          [Op.iLike]: `%${q}%`,
+        },
+      },
       order: ['created_at'],
       attributes: ['id', 'signature_id', 'product', 'start_date', 'end_date'],
       include: [
