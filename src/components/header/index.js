@@ -1,12 +1,23 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import history from '~/services/history';
+
+import { signOut } from '~/store/modules/auth/actions';
 
 import { Container, Content, Profile, StyledLink } from './styles';
 
 import logo from '~/assets/fastfeet-header.svg';
 
-export default function header() {
+export default function Header() {
+  const dispatch = useDispatch();
+  const profile = useSelector(state => state.user.profile);
+
+  function handleSignOut() {
+    dispatch(signOut());
+  }
+
   return (
     <Container>
       <Content>
@@ -41,8 +52,8 @@ export default function header() {
         <aside>
           <Profile>
             <div>
-              <strong>Admin FastFeet</strong>
-              <Link to="/">sair do sistema</Link>
+              <strong>{profile.name}</strong>
+              <Link onClick={handleSignOut}>sair do sistema</Link>
             </div>
           </Profile>
         </aside>
