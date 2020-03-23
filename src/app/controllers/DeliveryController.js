@@ -70,12 +70,28 @@ class DeliveryController {
         },
       },
       order: ['created_at'],
-      attributes: ['id', 'signature_id', 'product', 'start_date', 'end_date'],
+      attributes: [
+        'id',
+        'signature_id',
+        'product',
+        'start_date',
+        'end_date',
+        'canceled_at',
+      ],
       include: [
         {
           model: Recipient,
           as: 'recipient',
-          attributes: ['id', 'name', 'city', 'state'],
+          attributes: [
+            'id',
+            'name',
+            'city',
+            'state',
+            'street',
+            'number',
+            'complement',
+            'cep',
+          ],
         },
         {
           model: Deliveryman,

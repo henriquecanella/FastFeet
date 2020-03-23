@@ -12,6 +12,7 @@ import DeliverymanController from './app/controllers/DeliverymanController';
 import DeliveryController from './app/controllers/DeliveryController';
 import DeliverylistController from './app/controllers/DeliverylistController';
 import DeliveryProblemController from './app/controllers/DeliveryProblemController';
+import AllProblemsController from './app/controllers/AllProblemsController';
 
 const routes = new Router();
 const upload = multer(multerConfig);
@@ -43,5 +44,7 @@ routes.delete('/delivery/:id', DeliveryController.delete);
 
 routes.get('/delivery/:id/problems', DeliveryProblemController.index);
 routes.delete('/delivery/:id/problems', DeliveryProblemController.delete);
+
+routes.get('/problems', AllProblemsController.index);
 
 export default routes;

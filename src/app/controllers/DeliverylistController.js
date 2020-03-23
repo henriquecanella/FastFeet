@@ -37,16 +37,22 @@ class DeliverylistController {
 
     const delivery = await Delivery.findByPk(req.params.id);
 
+    if (delivery.start_date !== null) {
+      await delivery.update({
+        end_date: new Date(),
+        signature_id: req.body.signature_id,
+      });
+    } else if (!delivery.start_date && req.body.signature_id) {
+      return res.status(400).json({
+        error: "You cannot finish a delivery that doesn't started yet",
+      });
+    }
+
     delivery.start_date = delivery.start_date
       ? delivery.start_date
       : new Date();
 
     await delivery.save();
-
-    await delivery.update({
-      end_date: req.body.end_date,
-      signature_id: req.body.signature_id,
-    });
 
     return res.json(delivery);
   }
