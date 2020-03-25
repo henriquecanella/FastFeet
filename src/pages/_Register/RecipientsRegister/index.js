@@ -1,3 +1,4 @@
+/* eslint-disable radix */
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { Form, Input } from '@rocketseat/unform';
@@ -5,6 +6,7 @@ import * as Yup from 'yup';
 import { FaCheck } from 'react-icons/fa';
 import { IoIosArrowBack } from 'react-icons/io';
 
+import Mask from './Mask';
 import { registerRecipientRequest } from '~/store/modules/user/actions';
 
 import history from '~/services/history';
@@ -27,16 +29,17 @@ const schema = Yup.object().shape({
   complement: Yup.string(),
   city: Yup.string().required('o nome da cidade é obrigatório'),
   state: Yup.string().required('o nome do estado é obrigatório'),
-  cep: Yup.number()
-    .typeError('o número do cep é obrigatório')
-    .required('o número do cep é obrigatório'),
+  cep: Yup.string()
+    .typeError('O cep é obrigatório')
+    .required('O cep é obrigatório'),
 });
 
 export default function RecipientsRegister() {
   const dispatch = useDispatch();
 
   function handleSubmit(data) {
-    console.tron.log(data);
+    data.cep = parseInt(data.cep.replace('-', ''));
+    console.tron.log(data.cep);
     dispatch(registerRecipientRequest(data));
   }
 
@@ -113,7 +116,12 @@ export default function RecipientsRegister() {
             </div>
             <div>
               <strong>CEP</strong>
-              <Input type="number" name="cep" id="cep" placeholder="12345678" />
+              <Mask
+                name="cep"
+                mask="99999-999"
+                maskChar="_"
+                placeholder="Ex: 00000-000"
+              />
             </div>
           </CityContainer>
         </FormContainer>

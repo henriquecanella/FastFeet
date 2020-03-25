@@ -1,7 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { Form, Input } from '@rocketseat/unform';
-import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 import { FaCheck } from 'react-icons/fa';
 import { IoIosArrowBack } from 'react-icons/io';
@@ -20,12 +19,6 @@ import {
   FormContainer,
   SelectContainer,
 } from './styles';
-
-const schema = Yup.object().shape({
-  product: Yup.string().required('O nome do produto é obrigatório'),
-  recipient_id: Yup.string().typeError('O destinatário é obrigatório'),
-  deliveryman_id: Yup.string().typeError('O entregador é obrigatório'),
-});
 
 export default function OrdersRegister() {
   const dispatch = useDispatch();
