@@ -13,6 +13,10 @@ import DeliverymansRegister from '~/pages/_Register/DeliverymansRegister';
 import RecipientsRegister from '~/pages/_Register/RecipientsRegister';
 import OrdersRegister from '~/pages/_Register/OrdersRegister';
 
+import DeliverymansEdit from '~/pages/_Edit/DeliverymansEdit';
+import RecipientsEdit from '~/pages/_Edit/RecipientsEdit';
+import OrdersEdit from '~/pages/_Edit/OrdersEdit';
+
 export default function Routes() {
   return (
     <Switch>
@@ -34,6 +38,14 @@ export default function Routes() {
         isPrivate
       />
       <Route path="/orders/register" component={OrdersRegister} isPrivate />
+
+      <Route
+        path="/deliverymans/edit/:id"
+        component={DeliverymansEdit}
+        isPrivate
+      />
+      <Route path="/recipients/edit/:id" component={RecipientsEdit} isPrivate />
+      <Route path="/orders/edit/:id" component={OrdersEdit} isPrivate />
     </Switch>
   );
 }

@@ -24,37 +24,25 @@ export default function Header() {
         <nav>
           <img src={logo} alt="Logo FastFeet" />
           <StyledLink
-            iscurrent={
-              history.location.pathname === '/orders' ||
-              history.location.pathname === '/orders/' ||
-              history.location.pathname === '/orders/register'
-            }
+            iscurrent={history.location.pathname.includes('/orders')}
             to="/orders"
           >
             ENCOMENDAS
           </StyledLink>
           <StyledLink
-            iscurrent={
-              history.location.pathname === '/deliverymans' ||
-              history.location.pathname === '/deliverymans/' ||
-              history.location.pathname === '/deliverymans/register'
-            }
+            iscurrent={history.location.pathname.includes('/deliverymans')}
             to="/deliverymans"
           >
             ENTREGADORES
           </StyledLink>
           <StyledLink
-            iscurrent={
-              history.location.pathname === '/recipients' ||
-              history.location.pathname === '/recipients/' ||
-              history.location.pathname === '/recipients/register'
-            }
+            iscurrent={history.location.pathname.includes('/recipients')}
             to="/recipients"
           >
             DESTINATÁRIOS
           </StyledLink>
           <StyledLink
-            iscurrent={history.location.pathname === '/problems'}
+            iscurrent={history.location.pathname.includes('/problems')}
             to="/problems"
           >
             PROBLEMAS

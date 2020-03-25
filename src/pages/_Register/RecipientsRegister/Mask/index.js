@@ -1,9 +1,11 @@
 import React, { useRef, useState, useEffect } from 'react';
 import InputMask from 'react-input-mask';
 
+import PropTypes from 'prop-types';
+
 import { useField } from '@rocketseat/unform';
 
-export default function Mask({ name, inputMask }) {
+export default function Mask({ name }) {
   const ref = useRef(null);
   const { fieldName, registerField, defaultValue, error } = useField(name);
   const [mask, setMask] = useState(defaultValue);
@@ -39,3 +41,7 @@ export default function Mask({ name, inputMask }) {
     </>
   );
 }
+
+Mask.propTypes = {
+  name: PropTypes.string.isRequired,
+};

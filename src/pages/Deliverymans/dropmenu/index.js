@@ -37,7 +37,7 @@ export default function DropMenu({ deliverymanId, updateDeliverymans }) {
 
       <MenuList visible={visible}>
         <MenuItem>
-          <Link to="/">
+          <Link to={`/deliverymans/edit/${deliverymanId}`}>
             <MdEdit size={10} color="#4D85EE" />
             Editar
           </Link>

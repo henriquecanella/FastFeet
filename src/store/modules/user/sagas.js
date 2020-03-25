@@ -37,8 +37,20 @@ export function* registerOrder({ payload }) {
   }
 }
 
+export function* editDeliveryman({ payload }) {
+  try {
+    yield call(api.put, `deliverymans/${payload.data.id}`, payload.data);
+
+    toast.success('Edição realizada com sucesso!');
+    history.push('/deliverymans');
+  } catch (err) {
+    toast.error('Falha na edição, verifique seus dados!');
+  }
+}
+
 export default all([
   takeLatest('@user/REGISTER_DELIVERYMAN_REQUEST', registerDeliveryman),
   takeLatest('@user/REGISTER_RECIPIENT_REQUEST', registerRecipient),
   takeLatest('@user/REGISTER_ORDER_REQUEST', registerOrder),
+  takeLatest('@user/EDIT_DELIVERYMAN_REQUEST', editDeliveryman),
 ]);
