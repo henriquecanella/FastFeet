@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { FaPlus, FaSearch } from 'react-icons/fa';
 import { Form, Input } from '@rocketseat/unform';
 import api from '~/services/api';
+import history from '~/services/history';
 import {
   Container,
   PageTitle,
@@ -51,7 +52,12 @@ export default function Deliverymans() {
             placeholder="Buscar por entregadores"
           />
         </Form>
-        <button type="button">
+        <button
+          type="button"
+          onClick={() => {
+            history.push('/deliverymans/register');
+          }}
+        >
           <FaPlus size={16} color="#FFF" />
           <span>CADASTRAR</span>
         </button>
@@ -75,8 +81,9 @@ export default function Deliverymans() {
               <td>
                 <img
                   src={
-                    deliveryman.avatar.url ||
-                    'https://api.adorable.io/avatars/50/abott@adorable.png'
+                    deliveryman.avatar === null
+                      ? 'https://api.adorable.io/avatars/50/abott@adorable.png'
+                      : deliveryman.avatar.url
                   }
                   alt="Entregador Avatar"
                 />

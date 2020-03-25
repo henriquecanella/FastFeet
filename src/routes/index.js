@@ -9,15 +9,31 @@ import Deliverymans from '../pages/Deliverymans';
 import Recipients from '../pages/Recipients';
 import Problems from '../pages/Problems';
 
+import DeliverymansRegister from '~/pages/_Register/DeliverymansRegister';
+import RecipientsRegister from '~/pages/_Register/RecipientsRegister';
+import OrdersRegister from '~/pages/_Register/OrdersRegister';
+
 export default function Routes() {
   return (
     <Switch>
       <Route path="/" exact component={SignIn} />
 
-      <Route path="/orders" component={Orders} isPrivate />
-      <Route path="/deliverymans" component={Deliverymans} isPrivate />
-      <Route path="/recipients" component={Recipients} isPrivate />
+      <Route path="/orders" exact component={Orders} isPrivate />
+      <Route path="/deliverymans" component={Deliverymans} exact isPrivate />
+      <Route path="/recipients" component={Recipients} exact isPrivate />
       <Route path="/problems" component={Problems} isPrivate />
+
+      <Route
+        path="/deliverymans/register"
+        component={DeliverymansRegister}
+        isPrivate
+      />
+      <Route
+        path="/recipients/register"
+        component={RecipientsRegister}
+        isPrivate
+      />
+      <Route path="/orders/register" component={OrdersRegister} isPrivate />
     </Switch>
   );
 }

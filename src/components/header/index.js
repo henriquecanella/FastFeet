@@ -24,19 +24,31 @@ export default function Header() {
         <nav>
           <img src={logo} alt="Logo FastFeet" />
           <StyledLink
-            iscurrent={history.location.pathname === '/orders'}
+            iscurrent={
+              history.location.pathname === '/orders' ||
+              history.location.pathname === '/orders/' ||
+              history.location.pathname === '/orders/register'
+            }
             to="/orders"
           >
             ENCOMENDAS
           </StyledLink>
           <StyledLink
-            iscurrent={history.location.pathname === '/deliverymans'}
+            iscurrent={
+              history.location.pathname === '/deliverymans' ||
+              history.location.pathname === '/deliverymans/' ||
+              history.location.pathname === '/deliverymans/register'
+            }
             to="/deliverymans"
           >
             ENTREGADORES
           </StyledLink>
           <StyledLink
-            iscurrent={history.location.pathname === '/recipients'}
+            iscurrent={
+              history.location.pathname === '/recipients' ||
+              history.location.pathname === '/recipients/' ||
+              history.location.pathname === '/recipients/register'
+            }
             to="/recipients"
           >
             DESTINATÁRIOS

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { FaPlus, FaSearch } from 'react-icons/fa';
 import { Form, Input } from '@rocketseat/unform';
 import api from '~/services/api';
+import history from '~/services/history';
 import {
   Container,
   PageTitle,
@@ -75,7 +76,12 @@ export default function Orders() {
             placeholder="Buscar por encomendas"
           />
         </Form>
-        <button type="button">
+        <button
+          onClick={() => {
+            history.push('orders/register');
+          }}
+          type="button"
+        >
           <FaPlus size={16} color="#FFF" />
           <span>CADASTRAR</span>
         </button>
@@ -105,12 +111,18 @@ export default function Orders() {
                 <div>
                   <img
                     src={
-                      order.payload.deliveryman.avatar.url ||
-                      'https://api.adorable.io/avatars/50/abott@adorable.png'
+                      order.payload.deliveryman &&
+                      order.payload.deliveryman.avatar
+                        ? order.payload.deliveryman.avatar.url
+                        : 'https://api.adorable.io/avatars/50/abott@adorable.png'
                     }
                     alt="Entregador Avatar"
                   />
-                  <span>{order.payload.deliveryman.name}</span>
+                  <span>
+                    {order.payload.deliveryman
+                      ? order.payload.deliveryman.name
+                      : 'Entregador não alocado'}
+                  </span>
                 </div>
               </td>
               <td>

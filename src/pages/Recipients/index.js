@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { FaPlus, FaSearch } from 'react-icons/fa';
 import { Form, Input } from '@rocketseat/unform';
 import api from '~/services/api';
+import history from '~/services/history';
 import { Container, PageTitle, UpperWrapper, RecipientsTable } from './styles';
 
 import DropMenu from './dropmenu';
@@ -46,7 +47,12 @@ export default function Recipients() {
             placeholder="Buscar por destinatários"
           />
         </Form>
-        <button type="button">
+        <button
+          type="button"
+          onClick={() => {
+            history.push('recipients/register');
+          }}
+        >
           <FaPlus size={16} color="#FFF" />
           <span>CADASTRAR</span>
         </button>
@@ -71,8 +77,8 @@ export default function Recipients() {
               </td>
               <td>
                 <span>{`${recipient.street}, ${recipient.number}, ${
-                  recipient.complement ? recipient.complement : ''
-                }, ${recipient.city} - ${recipient.state}`}</span>
+                  recipient.complement ? `${recipient.complement},` : ''
+                } ${recipient.city} - ${recipient.state}`}</span>
               </td>
               <td>
                 <DropMenu
