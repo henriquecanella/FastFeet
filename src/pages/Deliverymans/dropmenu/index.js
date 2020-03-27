@@ -45,6 +45,7 @@ export default function DropMenu({ deliverymanId, updateDeliverymans }) {
             onClick={() => {
               handleDelete();
             }}
+            to="#"
           >
             <MdDeleteForever size={10} color="#DE3B3B" />
             Excluir

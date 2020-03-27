@@ -8,6 +8,7 @@ import Orders from '../pages/Orders';
 import Deliverymans from '../pages/Deliverymans';
 import Recipients from '../pages/Recipients';
 import Problems from '../pages/Problems';
+import NotFound from '../pages/NotFound';
 
 import DeliverymansRegister from '~/pages/_Register/DeliverymansRegister';
 import RecipientsRegister from '~/pages/_Register/RecipientsRegister';
@@ -46,6 +47,8 @@ export default function Routes() {
       />
       <Route path="/recipients/edit/:id" component={RecipientsEdit} isPrivate />
       <Route path="/orders/edit/:id" component={OrdersEdit} isPrivate />
+
+      <Route path="*" component={NotFound} isPrivate />
     </Switch>
   );
 }

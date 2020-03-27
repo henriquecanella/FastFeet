@@ -2,15 +2,23 @@
 import React, { useState, useEffect } from 'react';
 import { FaPlus, FaSearch } from 'react-icons/fa';
 import { Form, Input } from '@rocketseat/unform';
+import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import api from '~/services/api';
 import history from '~/services/history';
-import { Container, PageTitle, UpperWrapper, RecipientsTable } from './styles';
+import {
+  Container,
+  PageTitle,
+  UpperWrapper,
+  RecipientsTable,
+  Pagination,
+} from './styles';
 
 import DropMenu from './dropmenu';
 
 export default function Recipients() {
   const [recipients, setRecipients] = useState([]);
   const [q, setQ] = useState('');
+  const [page, setPage] = useState(1);
 
   function handleSubmit({ filter }) {
     setQ(filter);
@@ -21,17 +29,25 @@ export default function Recipients() {
     setQ('');
   }
 
+  function handlePreviousPage() {
+    if (page !== 1) {
+      setPage(page - 1);
+    }
+  }
+  function handleNextPage() {
+    setPage(page + 1);
+  }
+
   useEffect(() => {
     async function loadRecipient() {
       const response = await api.get('recipients', {
-        params: { q },
+        params: { q, page },
       });
 
       setRecipients(response.data);
     }
     loadRecipient();
-  }, [q]);
-  console.tron.log(recipients);
+  }, [page, q]);
 
   return (
     <Container>
@@ -68,7 +84,7 @@ export default function Recipients() {
         </thead>
         <tbody>
           {recipients.map(recipient => (
-            <tr>
+            <tr key={recipient.id}>
               <td>
                 <span>{`#${recipient.id}`}</span>
               </td>
@@ -92,6 +108,20 @@ export default function Recipients() {
           ))}
         </tbody>
       </RecipientsTable>
+      <Pagination>
+        <button type="button" onClick={() => handlePreviousPage()}>
+          <div>
+            <IoIosArrowBack color="#FFF" size={20} />
+            <span>Página anterior</span>
+          </div>
+        </button>
+        <button type="button" onClick={() => handleNextPage()}>
+          <div>
+            <span>Próxima Página</span>
+            <IoIosArrowForward color="#FFF" size={20} />
+          </div>
+        </button>
+      </Pagination>
     </Container>
   );
 }

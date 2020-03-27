@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useField } from '@rocketseat/unform';
+import { PropTypes } from 'prop-types';
 import api from '~/services/api';
 
 import { Container } from './styles';
@@ -11,8 +12,6 @@ export default function AvatarInput({ avatarUrl }) {
   const [preview, setPreview] = useState(defaultValue && defaultValue.url);
 
   const ref = useRef();
-
-  console.tron.log(avatarUrl);
 
   useEffect(() => {
     if (ref.current) {
@@ -61,3 +60,11 @@ export default function AvatarInput({ avatarUrl }) {
     </Container>
   );
 }
+
+AvatarInput.propTypes = {
+  avatarUrl: PropTypes.string,
+};
+
+AvatarInput.defaultProps = {
+  avatarUrl: '',
+};

@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { FaPlus, FaSearch } from 'react-icons/fa';
 import { Form, Input } from '@rocketseat/unform';
+import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import api from '~/services/api';
 import history from '~/services/history';
 import {
@@ -11,16 +12,67 @@ import {
   UpperWrapper,
   OrdersTable,
   Status,
+  Pagination,
+  ProblemButton,
 } from './styles';
 
 import DropMenu from './dropmenu';
 
 export default function Orders() {
   const [orders, setOrders] = useState([]);
+  const [problems, setProblems] = useState(true);
   const [q, setQ] = useState('');
+  const [page, setPage] = useState(1);
 
   function handleSubmit({ filter }) {
     setQ(filter);
+  }
+
+  async function handleProblems() {
+    setProblems(!problems);
+
+    if (problems === true) {
+      const deliveryProblems = await api.get('problems');
+
+      const selectedDeliveries = orders.filter(order => {
+        return (
+          deliveryProblems.data.filter(problem => {
+            return problem.delivery_id === order.payload.id;
+          }).length !== 0
+        );
+      }, []);
+
+      setOrders(selectedDeliveries);
+    } else {
+      const response = await api.get('delivery', {
+        params: { q, page },
+      });
+
+      const data = response.data.map(order => {
+        let status = '';
+
+        if (order.signature === null) {
+          order.signature = 'vazio';
+        }
+
+        if (order.canceled_at !== null) {
+          status = 'CANCELADA';
+        } else if (order.start_date !== null && order.end_date !== null) {
+          status = 'ENTREGUE';
+        } else if (order.start_date !== null && order.end_date === null) {
+          status = 'RETIRADA';
+        } else if (order.start_date === null && order.end_date === null) {
+          status = 'PENDENTE';
+        }
+
+        return {
+          payload: order,
+          status,
+        };
+      });
+
+      setOrders(data);
+    }
   }
 
   function handleUpdateOrders() {
@@ -28,10 +80,19 @@ export default function Orders() {
     setQ('');
   }
 
+  function handlePreviousPage() {
+    if (page !== 1) {
+      setPage(page - 1);
+    }
+  }
+  function handleNextPage() {
+    setPage(page + 1);
+  }
+
   useEffect(() => {
     async function loadOrder() {
       const response = await api.get('delivery', {
-        params: { q },
+        params: { q, page },
       });
 
       const data = response.data.map(order => {
@@ -60,7 +121,7 @@ export default function Orders() {
       setOrders(data);
     }
     loadOrder();
-  }, [q]);
+  }, [page, q]);
 
   return (
     <Container>
@@ -76,15 +137,26 @@ export default function Orders() {
             placeholder="Buscar por encomendas"
           />
         </Form>
-        <button
-          onClick={() => {
-            history.push('orders/register');
-          }}
-          type="button"
-        >
-          <FaPlus size={16} color="#FFF" />
-          <span>CADASTRAR</span>
-        </button>
+        <div>
+          <ProblemButton
+            onClick={() => {
+              handleProblems();
+            }}
+            type="button"
+            problems={problems}
+          >
+            <span>PROBLEMAS</span>
+          </ProblemButton>
+          <button
+            onClick={() => {
+              history.push('orders/register');
+            }}
+            type="button"
+          >
+            <FaPlus size={16} color="#FFF" />
+            <span>CADASTRAR</span>
+          </button>
+        </div>
       </UpperWrapper>
       <OrdersTable>
         <thead>
@@ -100,7 +172,7 @@ export default function Orders() {
         </thead>
         <tbody>
           {orders.map(order => (
-            <tr>
+            <tr key={order.payload.id}>
               <td>
                 <span>{`#${order.payload.id}`}</span>
               </td>
@@ -157,6 +229,20 @@ export default function Orders() {
           ))}
         </tbody>
       </OrdersTable>
+      <Pagination>
+        <button type="button" onClick={() => handlePreviousPage()}>
+          <div>
+            <IoIosArrowBack color="#FFF" size={20} />
+            <span>Página anterior</span>
+          </div>
+        </button>
+        <button type="button" onClick={() => handleNextPage()}>
+          <div>
+            <span>Próxima Página</span>
+            <IoIosArrowForward color="#FFF" size={20} />
+          </div>
+        </button>
+      </Pagination>
     </Container>
   );
 }

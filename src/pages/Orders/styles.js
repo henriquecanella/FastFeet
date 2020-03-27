@@ -47,25 +47,30 @@ export const UpperWrapper = styled.div`
     }
   }
 
-  > button {
+  div {
     display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    background: #7d40e7;
-    border-radius: 4px;
-    width: 142px;
-    height: 36px;
-    border: 0;
-    cursor: pointer;
-    transition: background 0.2s;
+    justify-content: space-between;
+    width: 300px;
+    > button:last-child {
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+      background: #7d40e7;
+      border-radius: 4px;
+      width: 142px;
+      height: 36px;
+      border: 0;
+      cursor: pointer;
+      transition: background 0.2s;
 
-    &:hover {
-      background: ${darken(0.03, '#7d40e7')};
-    }
+      &:hover {
+        background: ${darken(0.03, '#7d40e7')};
+      }
 
-    span {
-      color: #fff;
-      font-weight: bold;
+      span {
+        color: #fff;
+        font-weight: bold;
+      }
     }
   }
 `;
@@ -154,5 +159,66 @@ export const Status = styled.strong`
         : '#C1BC35'};
     content: '';
     border-radius: 50%;
+  }
+`;
+
+export const Pagination = styled.footer`
+  width: 500px;
+  display: flex;
+  justify-content: space-evenly;
+  position: fixed;
+  left: calc(50% - 250px);
+  bottom: 8%;
+
+  button {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    background: #7d40e7;
+    border-radius: 4px;
+    width: 142px;
+    height: 36px;
+    border: 0;
+    cursor: pointer;
+    transition: background 0.2s;
+
+    div {
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+    }
+
+    span {
+      color: #fff;
+      font-weight: bold;
+    }
+
+    &:hover {
+      background: ${darken(0.03, '#7d40e7')};
+    }
+  }
+`;
+
+export const ProblemButton = styled.button`
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  background: ${props => (props.problems ? '#2CA42B' : '#DE3B3B')};
+  border-radius: 4px;
+  width: 142px;
+  height: 36px;
+  border: 0;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  div {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+
+  span {
+    color: #fff;
+    font-weight: bold;
   }
 `;

@@ -35,10 +35,8 @@ const customStyles = {
 export default function DropMenu({ orderId, updateOrders, orderInfo }) {
   const [visible, setVisible] = useState(false);
   const [modalIsOpen, setIsOpen] = useState(false);
-
   function openModal() {
     setIsOpen(true);
-    console.tron.log(orderInfo);
     setVisible(false);
   }
 
@@ -73,7 +71,7 @@ export default function DropMenu({ orderId, updateOrders, orderInfo }) {
             <FaEye size={10} color="#8E5BE8" />
             Visualizar
           </Link>
-          <Link to="/">
+          <Link to={`/orders/edit/${orderId}`}>
             <MdEdit size={10} color="#4D85EE" />
             Editar
           </Link>
@@ -137,6 +135,17 @@ export default function DropMenu({ orderId, updateOrders, orderInfo }) {
 DropMenu.propTypes = {
   orderId: PropTypes.number.isRequired,
   updateOrders: PropTypes.func.isRequired,
-  orderInfo: PropTypes.objectOf([PropTypes.oneOfType([PropTypes.string])])
-    .isRequired,
+  orderInfo: PropTypes.shape({
+    street: PropTypes.string,
+    number: PropTypes.number,
+    complement: PropTypes.string,
+    city: PropTypes.string,
+    state: PropTypes.string,
+    cep: PropTypes.number,
+    start_date: PropTypes.string,
+    end_date: PropTypes.string,
+    signature: PropTypes.shape({
+      url: PropTypes.string,
+    }),
+  }).isRequired,
 };

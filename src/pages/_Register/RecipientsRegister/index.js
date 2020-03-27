@@ -30,6 +30,12 @@ const schema = Yup.object().shape({
   city: Yup.string().required('o nome da cidade é obrigatório'),
   state: Yup.string().required('o nome do estado é obrigatório'),
   cep: Yup.string()
+    .test(
+      'cep-length',
+      // eslint-disable-next-line no-template-curly-in-string
+      'O ${path} deve possuir 8 caracteres',
+      value => (value ? value.indexOf('_') === -1 : value === null)
+    )
     .typeError('O cep é obrigatório')
     .required('O cep é obrigatório'),
 });
@@ -39,7 +45,6 @@ export default function RecipientsRegister() {
 
   function handleSubmit(data) {
     data.cep = parseInt(data.cep.replace('-', ''));
-    console.tron.log(data.cep);
     dispatch(registerRecipientRequest(data));
   }
 

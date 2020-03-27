@@ -2,12 +2,13 @@
 /* eslint-disable no-unused-expressions */
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { PropTypes } from 'prop-types';
 import { Form, Input } from '@rocketseat/unform';
 import * as Yup from 'yup';
 import { FaCheck } from 'react-icons/fa';
 import { IoIosArrowBack } from 'react-icons/io';
 
-import { editDeliverymanRequest } from 'store/modules/user/actions';
+import { editDeliverymanRequest } from '~/store/modules/user/actions';
 
 import api from '~/services/api';
 
@@ -37,7 +38,6 @@ export default function DeliverymansEdit({ match }) {
   const dispatch = useDispatch();
 
   function handleSubmit(data) {
-    console.tron.log(data);
     data = {
       ...data,
       id: deliverymans.id,
@@ -103,3 +103,10 @@ export default function DeliverymansEdit({ match }) {
     </Container>
   );
 }
+DeliverymansEdit.propTypes = {
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.string,
+    }),
+  }).isRequired,
+};

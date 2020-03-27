@@ -1,22 +1,34 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
 import React, { useState, useEffect } from 'react';
+import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import api from '~/services/api';
-import { Container, PageTitle, ProblemsTable } from './styles';
+import { Container, PageTitle, ProblemsTable, Pagination } from './styles';
 
 import DropMenu from './dropmenu';
 
 export default function Problems() {
   const [problems, setProblems] = useState([]);
+  const [page, setPage] = useState(1);
+
+  function handlePreviousPage() {
+    if (page !== 1) {
+      setPage(page - 1);
+    }
+  }
+  function handleNextPage() {
+    setPage(page + 1);
+  }
 
   useEffect(() => {
     async function loadProblems() {
-      const response = await api.get('problems');
+      const response = await api.get('problems', {
+        params: { page },
+      });
 
       setProblems(response.data);
     }
     loadProblems();
-  }, []);
-  console.tron.log(problems);
+  }, [page]);
 
   return (
     <Container>
@@ -32,7 +44,7 @@ export default function Problems() {
         </thead>
         <tbody>
           {problems.map(problem => (
-            <tr>
+            <tr key={problem.id}>
               <td>
                 <span>{`#${problem.delivery_id}`}</span>
               </td>
@@ -53,6 +65,20 @@ export default function Problems() {
           ))}
         </tbody>
       </ProblemsTable>
+      <Pagination>
+        <button type="button" onClick={() => handlePreviousPage()}>
+          <div>
+            <IoIosArrowBack color="#FFF" size={20} />
+            <span>Página anterior</span>
+          </div>
+        </button>
+        <button type="button" onClick={() => handleNextPage()}>
+          <div>
+            <span>Próxima Página</span>
+            <IoIosArrowForward color="#FFF" size={20} />
+          </div>
+        </button>
+      </Pagination>
     </Container>
   );
 }

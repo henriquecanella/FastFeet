@@ -13,7 +13,7 @@ export const Container = styled.div`
       width: 150px;
       border-radius: 50%;
       border: 3px solid rgba(255, 255, 255, 0.3);
-      bcakground: #eee;
+      background: #eee;
     }
     input {
       display: none;

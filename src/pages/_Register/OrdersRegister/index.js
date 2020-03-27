@@ -34,8 +34,6 @@ export default function OrdersRegister() {
       value: recipient.id,
       label: recipient.name,
     }));
-    console.tron.log(`recipient: ${inputValue}`);
-    console.tron.log(data);
     setTimeout(() => {
       callback(data);
     }, 1000);
@@ -52,8 +50,6 @@ export default function OrdersRegister() {
       value: deliveryman.id,
       label: deliveryman.name,
     }));
-    console.tron.log(`deliveryman: ${inputValue}`);
-    console.tron.log(data);
     setTimeout(() => {
       callback(data);
     }, 1000);

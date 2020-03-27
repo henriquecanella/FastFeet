@@ -29,7 +29,6 @@ export default function DeliverymansRegister() {
   const dispatch = useDispatch();
 
   function handleSubmit(data) {
-    console.tron.log(data);
     dispatch(registerDeliverymanRequest(data));
   }
 
