@@ -61,8 +61,63 @@ class DeliveryController {
   }
 
   async index(req, res) {
-    const { q } = req.query;
+    const { q, page } = req.query;
 
+    if (page) {
+      const deliveries = await Delivery.findAll({
+        where: {
+          product: {
+            [Op.iLike]: `%${q}%`,
+          },
+        },
+        order: ['created_at'],
+        attributes: [
+          'id',
+          'signature_id',
+          'product',
+          'start_date',
+          'end_date',
+          'canceled_at',
+        ],
+        limit: 6,
+        offset: (page - 1) * 6,
+        include: [
+          {
+            model: Recipient,
+            as: 'recipient',
+            attributes: [
+              'id',
+              'name',
+              'city',
+              'state',
+              'street',
+              'number',
+              'complement',
+              'cep',
+            ],
+          },
+          {
+            model: Deliveryman,
+            as: 'deliveryman',
+            attributes: ['id', 'name'],
+            include: [
+              {
+                model: File,
+                as: 'avatar',
+                attributes: ['id', 'name', 'path', 'url'],
+              },
+            ],
+          },
+          {
+            model: File,
+            as: 'signature',
+            attributes: ['id', 'name', 'path', 'url'],
+          },
+        ],
+      });
+
+      return res.json(deliveries);
+    }
     const deliveries = await Delivery.findAll({
       where: {
         product: {
