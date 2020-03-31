@@ -13,10 +13,12 @@ import DeliveryController from './app/controllers/DeliveryController';
 import DeliverylistController from './app/controllers/DeliverylistController';
 import DeliveryProblemController from './app/controllers/DeliveryProblemController';
 import AllProblemsController from './app/controllers/AllProblemsController';
+import SelectDeliverymanController from './app/controllers/SelectDeliverymanController';
 
 const routes = new Router();
 const upload = multer(multerConfig);
 
+routes.get('/deliveryman/:id', SelectDeliverymanController.index);
 routes.get('/deliveryman/:id/deliveries', DeliverylistController.index);
 routes.put('/deliveryman/deliveries/:id', DeliverylistController.update);
 routes.post('/delivery/:id/problems', DeliveryProblemController.store);

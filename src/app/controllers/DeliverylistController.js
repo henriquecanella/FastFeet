@@ -1,12 +1,14 @@
 import * as Yup from 'yup';
 import Delivery from '../models/Delivery';
+import Deliveryman from '../models/Deliveryman';
+import Recipient from '../models/Recipient';
+import File from '../models/File';
 
 class DeliverylistController {
   async index(req, res) {
     const deliveries = await Delivery.findAll({
       where: {
         canceled_at: null,
-        end_date: null,
         deliveryman_id: req.params.id,
       },
       order: ['created_at'],
@@ -17,6 +19,41 @@ class DeliverylistController {
         'signature_id',
         'product',
         'start_date',
+        'end_date',
+        'canceled_at',
+      ],
+      include: [
+        {
+          model: Recipient,
+          as: 'recipient',
+          attributes: [
+            'id',
+            'name',
+            'city',
+            'state',
+            'street',
+            'number',
+            'complement',
+            'cep',
+          ],
+        },
+        {
+          model: Deliveryman,
+          as: 'deliveryman',
+          attributes: ['id', 'name'],
+          include: [
+            {
+              model: File,
+              as: 'avatar',
+              attributes: ['id', 'name', 'path', 'url'],
+            },
+          ],
+        },
+        {
+          model: File,
+          as: 'signature',
+          attributes: ['id', 'name', 'path', 'url'],
+        },
       ],
     });
 
