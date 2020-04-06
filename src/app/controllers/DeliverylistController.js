@@ -1,4 +1,6 @@
 import * as Yup from 'yup';
+import { Op } from 'sequelize';
+import { isAfter, isBefore, setHours, setMinutes, setSeconds } from 'date-fns';
 import Delivery from '../models/Delivery';
 import Deliveryman from '../models/Deliveryman';
 import Recipient from '../models/Recipient';
@@ -88,6 +90,35 @@ class DeliverylistController {
     delivery.start_date = delivery.start_date
       ? delivery.start_date
       : new Date();
+
+    console.log(delivery.start_date);
+
+    const startDay = setSeconds(setMinutes(setHours(new Date(), 8), 0), 0);
+    const endDay = setSeconds(setMinutes(setHours(new Date(), 18), 0), 0);
+
+    if (
+      isBefore(delivery.start_date, startDay) ||
+      isAfter(delivery.start_date, endDay)
+    ) {
+      return res.status(400).json({ error: 'Invalid time' });
+    }
+
+    const { count } = await Delivery.findAndCountAll({
+      where: {
+        deliveryman_id: req.params.deliveryman,
+        start_date: {
+          [Op.between]: [startDay, endDay],
+        },
+      },
+    });
+
+    if (count >= 5 && !delivery.end_date) {
+      return res
+        .status(400)
+        .json({ error: 'You cannot take more than 5 deliveries a day' });
+    }
+
+    console.log(count);
 
     await delivery.save();
 

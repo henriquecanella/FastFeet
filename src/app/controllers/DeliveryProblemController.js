@@ -27,7 +27,7 @@ class DeliveryProblemController {
   async index(req, res) {
     const deliveryproblem = await DeliveryProblem.findAll({
       where: { delivery_id: req.params.id },
-      attributes: ['id', 'delivery_id', 'description'],
+      attributes: ['id', 'delivery_id', 'description', 'created_at'],
     });
 
     return res.json(deliveryproblem);
