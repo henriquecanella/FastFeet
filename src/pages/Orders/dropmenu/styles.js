@@ -75,6 +75,9 @@ export const ModalContainer = styled.div`
 
     img {
       border-radius: 4px;
+      width: 500px;
+      height: 500px;
+      align-self: stretch;
     }
   }
 `;
